@@ -1,6 +1,5 @@
 package com.beltranbetania.postsjson.presentation.posts
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,19 +11,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PostViewModel @Inject constructor(
-    private val getQuotesUseCase: GetPostsUseCase/*,
+    private val getPostsUseCase: GetPostsUseCase/*,
     private val getRandomQuoteUseCase: GetRandomQuoteUseCase*/
 ) : ViewModel() {
 
-    val postModel = MutableLiveData<Post>()
+    val postModel = MutableLiveData<List<Post>>()
     val isLoading = MutableLiveData<Boolean>()
 
-    fun onCreate() {
+    fun loadPosts() {
         viewModelScope.launch {
             isLoading.postValue(true)
-            val result = getQuotesUseCase()
+            val result = getPostsUseCase()
             if (!result.isNullOrEmpty()) {
-                postModel.postValue(result[0])
+                postModel.postValue(result)
                 isLoading.postValue(false)
             }
         }

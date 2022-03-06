@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.beltranbetania.postsjson.databinding.FragmentPostsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,11 +15,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class PostsFragment : Fragment() {
     private var _binding:FragmentPostsBinding? = null
     private val binding get() = _binding!!
+    val mAdapter : PostAdapter = PostAdapter()
     private val postViewModel: PostViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,16 +30,22 @@ class PostsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //binding.btnToast.setOnClickListener { Toast.makeText(activity, "click", Toast.LENGTH_SHORT).show() }
-        postViewModel.onCreate()
+
+
+        binding.itemsContainerRV.setHasFixedSize(true)
+        binding.itemsContainerRV.layoutManager = LinearLayoutManager(activity)
+        binding.itemsContainerRV.adapter = mAdapter
 
         postViewModel.postModel.observe(viewLifecycleOwner, Observer {
-            /* binding.tvQuote.text = it.quote
-             binding.tvAuthor.text = it.author*/
+            mAdapter.setPostList(it)
         })
         postViewModel.isLoading.observe(viewLifecycleOwner, Observer {
-            // binding.loading.isVisible = it
+             binding.swipeContainer.isRefreshing = it
         })
+
+        postViewModel.loadPosts()
+
+        binding.swipeContainer.setOnRefreshListener { postViewModel.loadPosts()}
     }
 
     override fun onDestroyView() {
