@@ -1,8 +1,9 @@
 plugins {
     id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -31,7 +32,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures{
+        viewBinding = true
+    }
 }
+
+
 
 dependencies {
 
@@ -54,11 +60,15 @@ dependencies {
     //Corrutinas
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
     //dagger hilt
-    implementation "com.google.dagger:hilt-android:2.35"
-    kapt "com.google.dagger:hilt-android-compiler:2.35"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     //Room
     implementation "androidx.room:room-ktx:2.4.0"
     kapt "androidx.room:room-compiler:2.4.0"
+
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation "io.mockk:mockk:1.12.2"

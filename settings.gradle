@@ -5,20 +5,20 @@ pluginManagement {
         mavenCentral()
     }
 
-    resolutionStrategy {
+   /* resolutionStrategy {
         eachPlugin {
             if (requested.id.id == 'dagger.hilt.android.plugin') {
                 useModule("com.google.dagger:hilt-android-gradle-plugin:2.40.5")
             }
         }
-    }
+    }*/
 }
-dependencyResolutionManagement {
+/*dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
     }
-}
+}*/
 rootProject.name = "PostsJson"
 include ':app'
