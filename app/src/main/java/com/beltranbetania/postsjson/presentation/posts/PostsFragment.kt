@@ -10,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.beltranbetania.postsjson.databinding.FragmentPostsBinding
 import com.beltranbetania.postsjson.domain.model.Post
+import com.beltranbetania.postsjson.presentation.favorites.FavoritesFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,10 +56,18 @@ class PostsFragment : Fragment(),PostAdapter.onItemClickListener {
     }
 
     override fun itemClick(post: Post?) {
-        val action = PostsFragmentDirections.actionPostsFragmentToPostDetailFragment(post!!.id)
+       /* val action = PostsFragmentDirections.actionPostsFragmentToPostDetailFragment(post!!.id)
         NavHostFragment.findNavController(this)
-            .navigate(action)
+            .navigate(action)*/
 
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() =
+            PostsFragment().apply {
+
+            }
     }
 
 }

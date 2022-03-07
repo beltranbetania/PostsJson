@@ -8,11 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.beltranbetania.postsjson.R
+
 import com.beltranbetania.postsjson.databinding.FragmentPostDetailBinding
-import com.beltranbetania.postsjson.databinding.FragmentPostsBinding
-import com.beltranbetania.postsjson.presentation.posts.PostViewModel
+
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,7 +18,7 @@ class PostDetailFragment : Fragment() {
     private var _binding: FragmentPostDetailBinding? = null
     private val binding get() = _binding!!
     private val postDetailViewModel: PostDetailViewModel by viewModels()
-    val args: PostDetailFragmentArgs by navArgs()
+    //val args: PostDetailFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +35,7 @@ class PostDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("dsdsdsds-----","--"+args.post)//el postid
+      //  Log.d("dsdsdsds-----","--"+args.post)//el postid
     }
 
     override fun onDestroyView() {
