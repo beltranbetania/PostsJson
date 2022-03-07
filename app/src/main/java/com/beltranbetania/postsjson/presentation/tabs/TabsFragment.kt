@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,10 +41,14 @@ class TabsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.viewPager.adapter = FragmentAdapter(activity as AppCompatActivity)
-
         TabLayoutMediator(binding.tabLayout, binding.viewPager){tab, position ->
-            tab.text = "Tab ${position}"
+            tab.text =  when(position) {
+                0 -> getString(R.string.all)
+                1 -> getString(R.string.favorites)
+                else -> getString(R.string.all)
+            }
         }.attach()
+        binding.viewPager.setUserInputEnabled(false);
     }
 
     override fun onDestroyView() {
@@ -51,7 +56,10 @@ class TabsFragment : Fragment() {
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
 
+    }
 
     class FragmentAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity){
         override fun getItemCount(): Int {
@@ -65,7 +73,5 @@ class TabsFragment : Fragment() {
             }
         }
     }
-
-
 
 }

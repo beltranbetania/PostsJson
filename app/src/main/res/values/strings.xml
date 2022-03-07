@@ -4,5 +4,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="description">Description</string>
     <string name="user">User</string>
+    <string name="posts">Posts</string>
+    <string name="favorites">Favorites</string>
+    <string name="all">All</string>
+    <string name="delete">Delete</string>
+    <string name="swipe_to_refresh">Swipe to refresh!</string>
     <string name="comments">Comments</string>
 </resources>

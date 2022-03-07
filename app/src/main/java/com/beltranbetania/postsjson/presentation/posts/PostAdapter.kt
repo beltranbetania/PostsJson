@@ -34,9 +34,20 @@ class PostAdapter(val listener: onItemClickListener) :
         return data.size
     }
 
+    fun removeAt(position: Int) {
+        listener.itemDelete(data[position])
+        data.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
     class ViewHolder (val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root)  {
         fun bind(item:Post, listener: onItemClickListener){
             binding.postTitleTV.text=item.title
+            val imageResourse= when(item.isFavorite) {
+                true-> R.drawable.ic_star_yellow
+                false -> R.drawable.ic_star_white
+            }
+            binding.starIV.setImageResource(imageResourse)
             binding.root.setOnClickListener{
                 listener.itemClick(item)
 
@@ -46,6 +57,7 @@ class PostAdapter(val listener: onItemClickListener) :
 
     interface onItemClickListener {
         fun itemClick(post: Post?)
+        fun itemDelete(post: Post?)
     }
 
     companion object{

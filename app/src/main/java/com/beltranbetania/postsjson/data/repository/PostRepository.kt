@@ -3,10 +3,8 @@ package com.beltranbetania.postsjson.data.repository
 import android.util.Log
 import com.beltranbetania.postsjson.data.database.dao.PostDao
 import com.beltranbetania.postsjson.data.database.entities.PostEntity
-import com.beltranbetania.postsjson.data.model.CommentModel
 import com.beltranbetania.postsjson.data.model.PostModel
 import com.beltranbetania.postsjson.data.network.PostService
-import com.beltranbetania.postsjson.domain.model.Comment
 import com.beltranbetania.postsjson.domain.model.Post
 import com.beltranbetania.postsjson.domain.model.toDomain
 import javax.inject.Inject
@@ -31,7 +29,21 @@ class PostRepository @Inject constructor(
         postDao.insertAll(quotes)
     }
 
-    suspend fun clearPosts(){
+    suspend fun updatePost(id:Int, isFav:Boolean){
+        postDao.updateFavorite(isFav, id)
+    }
+
+    suspend fun deletePost(id:Int){
+        postDao.deleteItem(id)
+    }
+
+    suspend fun getPost(id:Int):List<Post>{
+       val response :  List<PostEntity> = postDao.selectItem(id)
+        return response.map { it.toDomain() }
+    }
+
+    suspend fun clearPosts() :List<Post>{
         postDao.deleteAllPosts()
+        return getAllPostsFromDatabase()
     }
 }

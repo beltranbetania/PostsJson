@@ -1,17 +1,13 @@
 package com.beltranbetania.postsjson.domain.usecase
 
-import android.util.Log
 import com.beltranbetania.postsjson.data.database.entities.toDatabase
 import com.beltranbetania.postsjson.data.repository.PostRepository
 import com.beltranbetania.postsjson.domain.model.Post
 import javax.inject.Inject
 
-class GetPostsUseCase @Inject constructor(private val repository: PostRepository) {
+class DeleteAllPostsUseCase @Inject constructor(private val repository: PostRepository) {
     suspend operator fun invoke():List<Post>{
-        var quotes = repository.getAllPostsFromApi()
-        if(quotes.isNotEmpty()){
-            repository.insertPosts(quotes.map { it.toDatabase() })
-        }
-        return repository.getAllPostsFromDatabase()
+        var quotes = repository.clearPosts()
+        return quotes
     }
 }

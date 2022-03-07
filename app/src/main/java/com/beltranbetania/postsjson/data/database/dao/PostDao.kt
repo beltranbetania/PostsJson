@@ -11,6 +11,9 @@ interface PostDao {
     @Query("SELECT * FROM post_table")
     suspend fun getAllPosts():List<PostEntity>
 
+    @Query("SELECT * FROM post_table WHERE id = :postId")
+    suspend fun selectItem(postId: Int):List<PostEntity>
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(quotes:List<PostEntity>)
 
@@ -18,11 +21,11 @@ interface PostDao {
     suspend fun deleteAllPosts()
 
     @Query("DELETE FROM post_table WHERE id = :postId")
-    fun deleteItem(postId: Int)
+    suspend fun deleteItem(postId: Int)
 
     @Query("SELECT * FROM post_table WHERE isFavorite = 1")
-    fun getFavorites(): List<PostEntity>
+    suspend fun getFavorites(): List<PostEntity>
 
     @Query("UPDATE post_table SET isFavorite = :favorite WHERE id = :postId")
-    fun updateFavoriteState(favorite: Boolean, postId: Int)
+    suspend fun updateFavorite(favorite: Boolean, postId: Int)
 }

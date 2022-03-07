@@ -1,18 +1,24 @@
 package com.beltranbetania.postsjson.presentation.posts
+
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.beltranbetania.postsjson.MainActivity
+import com.beltranbetania.postsjson.core.SwipeToDeleteCallback
 import com.beltranbetania.postsjson.databinding.FragmentPostsBinding
 import com.beltranbetania.postsjson.domain.model.Post
-import com.beltranbetania.postsjson.presentation.favorites.FavoritesFragment
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class PostsFragment : Fragment(),PostAdapter.onItemClickListener {
@@ -46,9 +52,37 @@ class PostsFragment : Fragment(),PostAdapter.onItemClickListener {
              binding.swipeContainer.isRefreshing = it
         })
 
+        binding.fab.setOnClickListener { view ->
+            postViewModel.deleteAllPosts()
+        }
+
+        postViewModel.isEmpty.observe(viewLifecycleOwner, Observer {
+            binding.swipeTv.visibility  =  when(it) {
+            true -> TextView.VISIBLE
+            false -> TextView.INVISIBLE
+        }
+        })
+
+        val swipeHandler = object : SwipeToDeleteCallback(requireActivity().applicationContext) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = binding.itemsContainerRV.adapter as PostAdapter
+                adapter.removeAt(viewHolder.adapterPosition)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(binding.itemsContainerRV)
+
         postViewModel.loadPosts()
 
-        binding.swipeContainer.setOnRefreshListener { postViewModel.loadPosts()}
+        binding.swipeContainer.setOnRefreshListener {
+            postViewModel.loadPosts()
+        }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        postViewModel.loadPosts()
     }
 
     override fun onDestroyView() {
@@ -58,10 +92,13 @@ class PostsFragment : Fragment(),PostAdapter.onItemClickListener {
 
     override fun itemClick(post: Post?) {
         (activity as MainActivity?)!!.openDetailFragment(post!!.id)
-       /* val action = PostsFragmentDirections.actionPostsFragmentToPostDetailFragment(post!!.id)
-        NavHostFragment.findNavController(this)
-            .navigate(action)*/
 
+
+    }
+
+    override fun itemDelete(post: Post?) {
+        Log.d("jhgggggg", "---"+post!!.id)
+        postViewModel.deletePost(post!!.id )
     }
 
     companion object {
