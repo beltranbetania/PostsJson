@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 
 import com.beltranbetania.postsjson.databinding.FragmentPostDetailBinding
+import com.beltranbetania.postsjson.presentation.posts.PostsFragment
 
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,9 +19,7 @@ class PostDetailFragment : Fragment() {
     private var _binding: FragmentPostDetailBinding? = null
     private val binding get() = _binding!!
     private val postDetailViewModel: PostDetailViewModel by viewModels()
-    //val args: PostDetailFragmentArgs by navArgs()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
+      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
@@ -42,6 +41,14 @@ class PostDetailFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
+    companion object {
+        val TAG: String = "DetailFragment"
+    }
+    fun newInstance(url: Int): PostDetailFragment {
+        var frag: PostDetailFragment= PostDetailFragment()
+        var args = Bundle()
+        args.putInt("id", id)
+        frag.setArguments(args)
+        return frag
+    }
 }

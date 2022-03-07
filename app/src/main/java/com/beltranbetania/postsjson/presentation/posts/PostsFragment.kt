@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.beltranbetania.postsjson.MainActivity
 import com.beltranbetania.postsjson.databinding.FragmentPostsBinding
 import com.beltranbetania.postsjson.domain.model.Post
 import com.beltranbetania.postsjson.presentation.favorites.FavoritesFragment
@@ -56,6 +57,7 @@ class PostsFragment : Fragment(),PostAdapter.onItemClickListener {
     }
 
     override fun itemClick(post: Post?) {
+        (activity as MainActivity?)!!.openDetailFragment(post!!.id)
        /* val action = PostsFragmentDirections.actionPostsFragmentToPostDetailFragment(post!!.id)
         NavHostFragment.findNavController(this)
             .navigate(action)*/
