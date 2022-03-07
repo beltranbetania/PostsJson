@@ -10,7 +10,7 @@ import com.beltranbetania.postsjson.databinding.ItemPostBinding
 import com.beltranbetania.postsjson.domain.model.Post
 import kotlin.collections.ArrayList
 
-class PostAdapter() :
+class PostAdapter(val listener: onItemClickListener) :
     RecyclerView.Adapter<PostAdapter.ViewHolder>() {
 
     var data = mutableListOf<Post>()
@@ -27,7 +27,7 @@ class PostAdapter() :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var item:Post= data[position]
-        holder.bind(item)
+        holder.bind(item,   listener)
     }
 
     override fun getItemCount(): Int {
@@ -35,9 +35,21 @@ class PostAdapter() :
     }
 
     class ViewHolder (val binding: ItemPostBinding) : RecyclerView.ViewHolder(binding.root)  {
-        fun bind(item:Post){
+        fun bind(item:Post, listener: onItemClickListener){
             binding.postTitleTV.text=item.title
+            binding.root.setOnClickListener{
+                listener.itemClick(item)
+
+            }
         }
+    }
+
+    interface onItemClickListener {
+        fun itemClick(post: Post?)
+    }
+
+    companion object{
+
     }
 
 }

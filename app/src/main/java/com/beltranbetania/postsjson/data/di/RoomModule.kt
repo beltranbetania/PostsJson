@@ -22,5 +22,5 @@ object RoomModule {
 
     @Singleton
     @Provides
-    fun provideQuoteDao(db: PostDatabase) = db.getQuoteDao()
+    fun provideQuoteDao(db: PostDatabase) = db.getPostDao()
 }

@@ -1,4 +1,4 @@
-package com.beltranbetania.postsjson.presentation.posts
+package com.beltranbetania.postsjson.presentation.postDetail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,21 +12,22 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class PostViewModel @Inject constructor(
-    private val getPostsUseCase: GetPostsUseCase
+class PostDetailViewModel @Inject constructor(
+    private var getDetailUseCase: GetDetailUseCase
 ) : ViewModel() {
-    val postModel = MutableLiveData<List<Post>>()
+    val commentModel = MutableLiveData<List<Comment>>()
     val isLoading = MutableLiveData<Boolean>()
 
-    fun loadPosts() {
+    fun loadComments(postId: Int) {
         viewModelScope.launch {
             isLoading.postValue(true)
-            val result = getPostsUseCase()
+            val result = getDetailUseCase.invoke(postId)
             if (!result.isNullOrEmpty()) {
-                postModel.postValue(result)
+                commentModel.postValue(result)
                 isLoading.postValue(false)
             }
         }
     }
+
 
 }
