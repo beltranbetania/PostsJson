@@ -5,6 +5,7 @@ On this repository you will find a Project with Clean Architecture, MVVM, Retrof
 * Allows save posts as favorite
 * Show a list of all favorite posts 
 * Allows delete all post from the list, or just one with swipe gesture on item
+* Implement unit testing for a use case
 
 ### Requirements
 * Android Studio 2 v3.0.1 or higher
