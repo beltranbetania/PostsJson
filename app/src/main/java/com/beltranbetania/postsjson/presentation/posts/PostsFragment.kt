@@ -81,9 +81,9 @@ class PostsFragment : Fragment(),PostAdapter.onItemClickListener {
 
     override fun onResume() {
         super.onResume()
-        try {
+       /* try {
             postViewModel.loadPosts()
-        }catch (e:Exception){}
+        }catch (e:Exception){}*/
 
     }
 
@@ -94,8 +94,6 @@ class PostsFragment : Fragment(),PostAdapter.onItemClickListener {
 
     override fun itemClick(post: Post?) {
         (activity as MainActivity?)!!.openDetailFragment(post!!.id)
-
-
     }
 
     override fun itemDelete(post: Post?) {

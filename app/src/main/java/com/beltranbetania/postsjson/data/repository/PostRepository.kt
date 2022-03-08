@@ -25,6 +25,11 @@ class PostRepository @Inject constructor(
         return response.map { it.toDomain() }
     }
 
+    suspend fun getFavoritesFromDatabase():List<Post>{
+        val response: List<PostEntity> = postDao.getFavorites()
+        return response.map { it.toDomain() }
+    }
+
     suspend fun insertPosts(quotes:List<PostEntity>){
         postDao.insertAll(quotes)
     }
