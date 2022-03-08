@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class GetCommentsUseCase @Inject constructor(private val repository: PostDetailRepository) {
     suspend operator fun invoke(postId: Int):List<Comment>{
-        var quotes = repository.getCommentsFromApi(postId)
-        return quotes
+        var comments = repository.getCommentsFromApi(postId)
+        return comments
     }
 }

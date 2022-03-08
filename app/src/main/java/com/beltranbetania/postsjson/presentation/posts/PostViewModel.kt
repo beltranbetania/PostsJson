@@ -28,9 +28,11 @@ class PostViewModel @Inject constructor(
             isEmpty.postValue(result.isNullOrEmpty())
             if (!result.isNullOrEmpty()) {
                 postModel.postValue(result)
-                isLoading.postValue(false)
                 isEmpty.postValue(false)
+            }else{
+                isEmpty.postValue(true)
             }
+            isLoading.postValue(false)
         }
     }
 

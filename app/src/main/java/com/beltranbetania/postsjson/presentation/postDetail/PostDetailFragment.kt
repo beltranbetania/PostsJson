@@ -10,9 +10,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.beltranbetania.Commentsjson.presentation.CommentDetail.CommentsAdapter
 import com.beltranbetania.postsjson.R
 import com.beltranbetania.postsjson.databinding.FragmentPostDetailBinding
-import com.beltranbetania.postsjson.presentation.posts.PostViewModel
+
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -22,6 +25,7 @@ class PostDetailFragment : Fragment() {
     private val binding get() = _binding!!
     var postId:Int?=null
     var isFav:Boolean=false
+    var mAdapter : CommentsAdapter = CommentsAdapter ()
     private val postDetailViewModel: PostDetailViewModel by viewModels()
 
     override fun onCreateView(
@@ -31,20 +35,21 @@ class PostDetailFragment : Fragment() {
         _binding = FragmentPostDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             postId = arguments?.getInt("id")
         }
-
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-       binding.toolbar.setNavigationIcon(R.drawable.ic_back)
-       binding.toolbar.setNavigationOnClickListener(View.OnClickListener { requireActivity().onBackPressed() })
+        binding.toolbar.setNavigationIcon(R.drawable.ic_back)
+        binding.toolbar.setNavigationOnClickListener(View.OnClickListener { requireActivity().onBackPressed() })
+
+        binding.itemsContainerRV.setHasFixedSize(true)
+        binding.itemsContainerRV.layoutManager = LinearLayoutManager(activity)
+        binding.itemsContainerRV.adapter = mAdapter
 
         postDetailViewModel.postModel.observe(viewLifecycleOwner, Observer {
             isFav=it.isFavorite
@@ -56,17 +61,32 @@ class PostDetailFragment : Fragment() {
             binding.favoriteIV.setImageResource(imageResourse)
         })
 
-        postDetailViewModel.isLoading.observe(viewLifecycleOwner, Observer {
-           // binding.swipeContainer.isRefreshing = it
+        postDetailViewModel.userModel.observe(viewLifecycleOwner, Observer {
+            binding.nameTV.text="${getString(R.string.name)}: ${it.name}"
+            binding.emailTV.text="${getString(R.string.email)}: ${it.email}"
+            binding.phoneTV.text="${getString(R.string.phone)}: ${it.phone}"
+            binding.websiteTV.text="${getString(R.string.website)}: ${it.website}"
         })
 
-        binding.favoriteIV.setOnClickListener {
-            postDetailViewModel.updateFavorite(postId!!, !isFav) }
+        postDetailViewModel.commentModel.observe(viewLifecycleOwner, Observer {
+            mAdapter.setCommentList(it)
+        })
 
+        postDetailViewModel.errorMsg.observe(viewLifecycleOwner, Observer {
+            Snackbar.make(view, it,
+                Snackbar.LENGTH_LONG).show()
+        })
+
+        postDetailViewModel.isLoading.observe(viewLifecycleOwner, Observer {
+            binding.swipeContainer.isRefreshing = it
+        })
+
+        binding.favoriteIV.setOnClickListener { postDetailViewModel.updateFavorite(postId!!, !isFav) }
+        binding.swipeContainer.setOnRefreshListener {
+            postDetailViewModel.getDetailPost(postId!!)
+        }
         postDetailViewModel.getDetailPost(postId!!)
-
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

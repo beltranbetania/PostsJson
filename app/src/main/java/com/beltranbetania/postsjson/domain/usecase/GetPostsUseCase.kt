@@ -8,9 +8,9 @@ import javax.inject.Inject
 
 class GetPostsUseCase @Inject constructor(private val repository: PostRepository) {
     suspend operator fun invoke():List<Post>{
-        var quotes = repository.getAllPostsFromApi()
-        if(quotes.isNotEmpty()){
-            repository.insertPosts(quotes.map { it.toDatabase() })
+        var posts = repository.getAllPostsFromApi()
+        if(posts.isNotEmpty()){
+            repository.insertPosts(posts.map { it.toDatabase() })
         }
         return repository.getAllPostsFromDatabase()
     }

@@ -17,7 +17,9 @@ import com.beltranbetania.postsjson.MainActivity
 import com.beltranbetania.postsjson.core.SwipeToDeleteCallback
 import com.beltranbetania.postsjson.databinding.FragmentPostsBinding
 import com.beltranbetania.postsjson.domain.model.Post
+import com.beltranbetania.postsjson.presentation.tabs.TabsFragment
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.Exception
 
 
 @AndroidEntryPoint
@@ -51,18 +53,15 @@ class PostsFragment : Fragment(),PostAdapter.onItemClickListener {
         postViewModel.isLoading.observe(viewLifecycleOwner, Observer {
              binding.swipeContainer.isRefreshing = it
         })
-
         binding.fab.setOnClickListener { view ->
             postViewModel.deleteAllPosts()
         }
-
         postViewModel.isEmpty.observe(viewLifecycleOwner, Observer {
             binding.swipeTv.visibility  =  when(it) {
             true -> TextView.VISIBLE
             false -> TextView.INVISIBLE
         }
         })
-
         val swipeHandler = object : SwipeToDeleteCallback(requireActivity().applicationContext) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = binding.itemsContainerRV.adapter as PostAdapter
@@ -82,7 +81,10 @@ class PostsFragment : Fragment(),PostAdapter.onItemClickListener {
 
     override fun onResume() {
         super.onResume()
-        postViewModel.loadPosts()
+        try {
+            postViewModel.loadPosts()
+        }catch (e:Exception){}
+
     }
 
     override fun onDestroyView() {
@@ -97,7 +99,7 @@ class PostsFragment : Fragment(),PostAdapter.onItemClickListener {
     }
 
     override fun itemDelete(post: Post?) {
-        Log.d("jhgggggg", "---"+post!!.id)
+
         postViewModel.deletePost(post!!.id )
     }
 
@@ -108,5 +110,7 @@ class PostsFragment : Fragment(),PostAdapter.onItemClickListener {
 
             }
     }
+
+
 
 }

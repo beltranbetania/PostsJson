@@ -10,4 +10,8 @@
     <string name="delete">Delete</string>
     <string name="swipe_to_refresh">Swipe to refresh!</string>
     <string name="comments">Comments</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="website">Website</string>
 </resources>

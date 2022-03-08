@@ -8,7 +8,7 @@ import com.beltranbetania.postsjson.data.database.entities.PostEntity
 
 @Dao
 interface PostDao {
-    @Query("SELECT * FROM post_table")
+    @Query("SELECT * FROM post_table ORDER BY isFavorite DESC")
     suspend fun getAllPosts():List<PostEntity>
 
     @Query("SELECT * FROM post_table WHERE id = :postId")

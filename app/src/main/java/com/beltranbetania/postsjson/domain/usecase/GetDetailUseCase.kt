@@ -6,9 +6,9 @@ import javax.inject.Inject
 
 class GetDetailUseCase @Inject constructor(private val repository: PostRepository) {
     suspend operator fun invoke(postId: Int):Post?{
-        val quotes = repository.getPost(postId)
-        if (!quotes.isNullOrEmpty()){
-            return quotes[0]
+        val post = repository.getPost(postId)
+        if (!post.isNullOrEmpty()){
+            return post[0]
         }
         return null
     }
